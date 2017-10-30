@@ -60,7 +60,7 @@ class ProtocolShortItem extends Component {
     const { item } = this.props;
 
     return (
-      <div className="card mb-3" onClick={() => this.collapse()}>
+      <div className="card mb-3 border-0" onClick={() => this.collapse()}>
         <div className="card-body" >
           <H4 className="card-title"><strong>{item.title}</strong></H4>
 

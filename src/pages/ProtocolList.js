@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import data from './../data/protocols.json';
+import Header from './../components/Header';
 import ProtocolShortItem from './../components/ProtocolShortItem';
 
 class ProtocolList extends Component {
@@ -21,12 +22,17 @@ class ProtocolList extends Component {
   }
 
   render() {
-    return (<div className="row justify-content-center p-4">
-        <div className="col col-lg-7">
-          {this.state.items.map((item, index) => <ProtocolShortItem item={item} key={index} />)}
-        </div>
+    return (
+      <div>
+        <Header />
 
-        <div className="col-lg-3">
+        <div className="row justify-content-center p-4 bg-light">
+          <div className="col col-lg-7">
+            {this.state.items.map((item, index) => <ProtocolShortItem item={item} key={index} />)}
+          </div>
+
+          <div className="col-lg-3">
+          </div>
         </div>
       </div>
     );
