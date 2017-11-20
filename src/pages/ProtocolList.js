@@ -1,39 +1,40 @@
 import React, { Component } from 'react';
-import data from './../data/protocols.json';
-import Header from './../components/Header';
-import ProtocolShortItem from './../components/ProtocolShortItem';
+import styled from 'styled-components';
+
+const H4 =styled.h4`
+  &.card-title {
+    font-size: 1rem;
+  }
+`;
 
 class ProtocolList extends Component {
-  constructor(props) {
-      super(props);
-
-      this.state = {
-        items: []
-      }
+  summary = (text) => {
+    return `${text.substring(0, 197)}...`;
   }
 
-  componentDidMount() {
-    const attrs = ['id', 'title', 'abstract', 'materials_and_methods', 'journal'];
-    const items = data.response.docs.filter((protocol) =>
-      Object.keys(protocol).length >= attrs.length
-    );
-
-    this.setState({ items: items });
+  renderList = () => {
+    const { items } = this.props;
+    
+    if (items.length) {
+      return items.map((item, index) => {
+        return (
+          <div className="card mb-3 border-0" key={index} onClick={() => this.props.onItemSelect(item)}>
+            <div className="card-body" >
+              <H4 className="card-title"><strong>{item.title}</strong></H4>
+              <p className="card-text">{this.summary(item.materials_and_methods)}</p>
+            </div>
+          </div>
+        );
+      });
+    } else {
+      return (<p>Your search did not match any documents.</p>);
+    }
   }
 
   render() {
     return (
       <div>
-        <Header />
-
-        <div className="row justify-content-center p-4 bg-light">
-          <div className="col col-lg-7">
-            {this.state.items.map((item, index) => <ProtocolShortItem item={item} key={index} />)}
-          </div>
-
-          <div className="col-lg-3">
-          </div>
-        </div>
+        {this.renderList()}
       </div>
     );
   }

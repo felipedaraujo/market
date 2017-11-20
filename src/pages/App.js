@@ -1,14 +1,12 @@
 import React, { Component } from 'react';
-import { BrowserRouter, Route } from 'react-router-dom';
-import ProtocolList from './ProtocolList';
+import { BrowserRouter , Route } from 'react-router-dom';
+import Layout from './Layout';
 
 class App extends Component {
   render() {
     return (
       <BrowserRouter>
-        <div>
-          <Route path="/" component={ProtocolList} exact />
-        </div>
+        <Route path="" component={Layout} />
       </BrowserRouter>
     );
   }
