@@ -12,7 +12,8 @@ class Layout extends Component {
 
     this.state = {
       items: [],
-      item: {}
+      item: {},
+      page: 1
     }
   }
 
@@ -21,7 +22,7 @@ class Layout extends Component {
   }
 
   onSearch(query) {
-    let url = 'http://localhost:3000/protocols';
+    let url = 'http://protocome-proof-api.herokuapp.com/protocols';
     if (query) url += `?q=${query}`;
 
     axios.get(url).then(response => this.setState({ items: response.data }));
