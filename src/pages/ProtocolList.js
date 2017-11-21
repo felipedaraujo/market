@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
-import Infinite from 'react-infinite';
 
 const H4 = styled.h4`
   &.card-title {
@@ -12,10 +11,6 @@ class ProtocolList extends Component {
   summary = (text, length) => {
     if (text.length < length) return text;
     return `${text.substring(0, length)}...`;
-  }
-
-  handleInfiniteLoad = () => {
-    // https://github.com/seatgeek/react-infinite
   }
 
   highlight = (item, attr) => {
@@ -106,9 +101,8 @@ class ProtocolList extends Component {
     return (
       <div>
         {this.resultsTotal()}
-        <Infinite containerHeight={1600} elementHeight={159} onInfiniteLoad={this.handleInfiniteLoad}>
-          {this.renderList()}
-        </Infinite>
+
+        {this.renderList()}
       </div>
     );
   }
