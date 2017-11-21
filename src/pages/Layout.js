@@ -23,7 +23,7 @@ class Layout extends Component {
   }
 
   onSearch(query) {
-    let url = 'http://localhost:3000/protocols';
+    let url = 'http://protocome-proof-api.herokuapp.com/protocols';
 
     if (query) {
       url += `?q=${query}`;
