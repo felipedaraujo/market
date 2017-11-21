@@ -12,7 +12,6 @@ class Header extends Component {
 
   onSubmit(event) {
     event.preventDefault();
-    console.log(`Query: ${this.state.query}`);
     this.props.onSubmit(this.state.query);
   }
 
@@ -32,7 +31,7 @@ class Header extends Component {
 
           <form className="form-inline" onSubmit={this.onSubmit.bind(this)}>
             <input className="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" value={this.state.query} onChange={this.onChange.bind(this)}/>
-            <button className="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+            <button className="btn btn-outline-light my-2 my-sm-0" type="submit">Search</button>
           </form>
         </div>
       </nav>

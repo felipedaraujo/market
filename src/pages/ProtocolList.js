@@ -18,6 +18,56 @@ class ProtocolList extends Component {
     // https://github.com/seatgeek/react-infinite
   }
 
+  highlight = (item, attr) => {
+    const { highlights } = item;
+    return highlights && highlights[attr] ? highlights[attr] : item[attr];
+  }
+
+  title = (item) => {
+    const attr = 'title';
+    const text = this.highlight(item, attr);
+    const hasInnerHtml = item.highlights && item.highlights[attr];
+
+    if (hasInnerHtml) {
+      const markup = this.createMarkup(this.summary(text, 77));
+
+      return (
+        <strong dangerouslySetInnerHTML={markup}>
+        </strong>
+      );
+    } else {
+      return (
+        <strong>
+          {this.summary(text, 77)}
+        </strong>
+      );
+    }
+  }
+
+  methods = (item) => {
+    const attr = 'materials_and_methods';
+    const text = this.highlight(item, attr);
+    const hasInnerHtml = item.highlights && item.highlights[attr];
+
+    if (hasInnerHtml) {
+      const markup = this.createMarkup(this.summary(text, 197))
+      return (
+        <p className="card-text" dangerouslySetInnerHTML={markup}>
+        </p>
+      );
+    } else {
+      return (
+        <p className="card-text">
+          {this.summary(text, 197)}
+        </p>
+      );
+    }
+  }
+
+  createMarkup = (text) => {
+    return {__html: text};
+  }
+
   renderList = () => {
     const { items } = this.props;
 
@@ -26,21 +76,39 @@ class ProtocolList extends Component {
         return (
           <div className="card mb-3 border-0" key={index} onClick={() => this.props.onItemSelect(item)}>
             <div className="card-body" >
-              <H4 className="card-title"><strong>{this.summary(item.title, 77)}</strong></H4>
-              <p className="card-text">{this.summary(item.materials_and_methods, 197)}</p>
+              <H4 className="card-title">
+                {this.title(item)}
+              </H4>
+              {this.methods(item)}
             </div>
           </div>
         );
       });
     } else {
-      return (<p>Your search did not match any documents.</p>);
+      // TODO: render this message outside of the InfiniteScroll block
+      return (<p>Your search - <strong>{this.props.query}</strong> - did not match any documents.</p>);
+    }
+  }
+
+  resultsTotal = () => {
+    const { query, items } = this.props;
+
+    if (query && items.length) {
+      return (
+        <p>
+          About ({items.length}) results for <strong>{query}</strong>
+        </p>
+      );
     }
   }
 
   render() {
     return (
       <div>
-        {this.renderList()}
+        {this.resultsTotal()}
+        <Infinite containerHeight={1600} elementHeight={159} onInfiniteLoad={this.handleInfiniteLoad}>
+          {this.renderList()}
+        </Infinite>
       </div>
     );
   }

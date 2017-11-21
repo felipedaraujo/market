@@ -13,7 +13,8 @@ class Layout extends Component {
     this.state = {
       items: [],
       item: {},
-      page: 1
+      page: 1,
+      query: ''
     }
   }
 
@@ -22,10 +23,16 @@ class Layout extends Component {
   }
 
   onSearch(query) {
-    let url = 'http://protocome-proof-api.herokuapp.com/protocols';
-    if (query) url += `?q=${query}`;
+    let url = 'http://localhost:3000/protocols';
 
-    axios.get(url).then(response => this.setState({ items: response.data }));
+    if (query) {
+      url += `?q=${query}`;
+      this.setState({ query });
+    };
+
+    axios.get(url).then(response => {
+      this.setState({ items: response.data })
+    });
   }
 
   onItemSelect = (item) => {
@@ -42,7 +49,7 @@ class Layout extends Component {
 
         <div className="row justify-content-center p-4 bg-light">
           <div className="col col-lg-7">
-            <Route path="/"  render={() => <ProtocolList items={this.state.items} onItemSelect={this.onItemSelect}/>} exact />
+            <Route path="/"  render={() => <ProtocolList items={this.state.items} onItemSelect={this.onItemSelect} query={this.state.query} />} exact />
             <Route path="/:protocolId" render={(props) => <ProtocolItem item={this.state.item} />} />
           </div>
 
