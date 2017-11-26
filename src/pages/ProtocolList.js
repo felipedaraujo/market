@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
+import Infinite from 'react-infinite'
 
 const H4 = styled.h4`
   &.card-title {
@@ -63,23 +64,45 @@ class ProtocolList extends Component {
     return {__html: text};
   }
 
+  onInfiniteLoad = () => {
+    if (this.props.hasMoreItems) this.props.onLoadMore();
+  }
+
+  rowRenderer = (item, key) => {
+    return (
+      <div className="card mb-3 border-0" key={key}
+              onClick={() => this.props.onItemSelect(item)}>
+        <div className="card-body">
+          <H4 className="card-title">
+            {this.title(item)}
+          </H4>
+          {this.methods(item)}
+        </div>
+      </div>
+    )
+  }
+
+  spinner = () => {
+    console.log(this.props.loading)
+    if (this.props.loading) return (<div className="text-center">Loading...</div>);
+  }
+
   renderList = () => {
-    const { items } = this.props;
+    const { items, loading } = this.props;
 
     if (items.length) {
-      return items.map((item, index) => {
-        return (
-          <div className="card mb-3 border-0" key={index} onClick={() => this.props.onItemSelect(item)}>
-            <div className="card-body" >
-              <H4 className="card-title">
-                {this.title(item)}
-              </H4>
-              {this.methods(item)}
-            </div>
-          </div>
-        );
-      });
-    } else {
+      return (
+        <Infinite elementHeight={159}
+          useWindowAsScrollContainer
+          infiniteLoadBeginEdgeOffset={100}
+          onInfiniteLoad={this.onInfiniteLoad}
+          loadingSpinnerDelegate={this.spinner()}
+          isInfiniteLoading={loading}
+        >
+          {items.map(this.rowRenderer)}
+        </Infinite>
+      );
+    } else if (!this.props.loading) {
       // TODO: render this message outside of the InfiniteScroll block
       return (<p>Your search - <strong>{this.props.query}</strong> - did not match any documents.</p>);
     }

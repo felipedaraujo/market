@@ -8,30 +8,57 @@ import ProtocolItem from './ProtocolItem';
 
 class Layout extends Component {
   constructor(props) {
-    super(props)
+    super(props);
+
+    let url;
+
+    if (process.env.NODE_ENV === 'production') {
+      url = process.env.REACT_APP_API_URL_PROD;
+    } else {
+      url = process.env.REACT_APP_API_URL_DEV;
+    }
 
     this.state = {
       items: [],
       item: {},
       page: 1,
-      query: ''
+      query: '',
+      apiURL: url,
+      hasMoreItems: false,
+      loading: false
     }
   }
 
   componentDidMount() {
-    this.onSearch('');
+    this.onLoadItems();
   }
 
   onSearch(query) {
-    let url = 'http://protocome-proof-api.herokuapp.com/protocols';
+    this.setState({ items: [], query, page: 1 }, () => this.onLoadItems());
+  }
 
-    if (query) {
-      url += `?q=${query}`;
-      this.setState({ query });
+  onLoadItems() {
+    let url = this.state.apiURL;
+
+    if (this.state.query) {
+      url += `?q=${this.state.query}`;
     };
 
-    axios.get(url).then(response => {
-      this.setState({ items: response.data })
+    this.setState({
+      loading: true
+    })
+
+    axios.get(url, {
+      params: {
+        page: this.state.page
+      }
+    }).then(response => {
+
+      this.setState({
+        items: [...this.state.items, ...response.data] ,
+        hasMoreItems: !!response.data.length,
+        loading: false
+      });
     });
   }
 
@@ -42,6 +69,11 @@ class Layout extends Component {
     });
   }
 
+  onLoadMore = () => {
+    const nextPage = this.state.page + 1;
+    this.setState({ page: nextPage }, () => this.onLoadItems());
+  }
+
   render() {
     return (
       <div>
@@ -49,7 +81,7 @@ class Layout extends Component {
 
         <div className="row justify-content-center p-4 bg-light">
           <div className="col col-lg-7">
-            <Route path="/"  render={() => <ProtocolList items={this.state.items} onItemSelect={this.onItemSelect} query={this.state.query} />} exact />
+            <Route path="/"  render={() => <ProtocolList items={this.state.items} onItemSelect={this.onItemSelect} query={this.state.query} onLoadMore={this.onLoadMore} hasMoreItems={this.state.hasMoreItems} loading={this.state.loading} />} exact />
             <Route path="/:protocolId" render={(props) => <ProtocolItem item={this.state.item} />} />
           </div>
 
