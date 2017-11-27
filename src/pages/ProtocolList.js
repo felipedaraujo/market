@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
-// import Infinite from 'react-infinite';
+import Infinite from 'react-infinite';
 import { Link } from 'react-router-dom';
-
 
 const H4 = styled.h4`
   &.card-title {
@@ -93,17 +92,15 @@ class ProtocolList extends Component {
 
     if (items.length) {
       return (
-        // <Infinite elementHeight={159}
-        //   useWindowAsScrollContainer
-        //   infiniteLoadBeginEdgeOffset={100}
-        //   onInfiniteLoad={this.onInfiniteLoad}
-        //   loadingSpinnerDelegate={this.spinner()}
-        //   isInfiniteLoading={loading}
-        // >
-        <div>
+        <Infinite elementHeight={159}
+          useWindowAsScrollContainer
+          infiniteLoadBeginEdgeOffset={100}
+          onInfiniteLoad={this.onInfiniteLoad}
+          loadingSpinnerDelegate={this.spinner()}
+          isInfiniteLoading={loading}
+        >
           {items.map(this.rowRenderer)}
-        </div>
-        // </Infinite>
+        </Infinite>
       );
     } else if (!this.props.loading) {
       // TODO: render this message outside of the InfiniteScroll block
