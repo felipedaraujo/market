@@ -81,7 +81,7 @@ class Layout extends Component {
 
         <div className="row justify-content-center p-4 bg-light">
           <div className="col col-lg-7">
-            <Route path="/"  render={() => <ProtocolList items={this.state.items} onItemSelect={this.onItemSelect} query={this.state.query} onLoadMore={this.onLoadMore} hasMoreItems={this.state.hasMoreItems} loading={this.state.loading} />} exact />
+            <Route path={this.props.match.url}  render={() => <ProtocolList items={this.state.items} onItemSelect={this.onItemSelect} query={this.state.query} onLoadMore={this.onLoadMore} hasMoreItems={this.state.hasMoreItems} loading={this.state.loading} />} exact />
             <Route path="/:protocolId" render={(props) => <ProtocolItem item={this.state.item} />} />
           </div>
 
