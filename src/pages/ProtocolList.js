@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
-import Infinite from 'react-infinite';
+// import Infinite from 'react-infinite';
 import { Link } from 'react-router-dom';
 
 
@@ -93,15 +93,17 @@ class ProtocolList extends Component {
 
     if (items.length) {
       return (
-        <Infinite elementHeight={159}
-          useWindowAsScrollContainer
-          infiniteLoadBeginEdgeOffset={100}
-          onInfiniteLoad={this.onInfiniteLoad}
-          loadingSpinnerDelegate={this.spinner()}
-          isInfiniteLoading={loading}
-        >
+        // <Infinite elementHeight={159}
+        //   useWindowAsScrollContainer
+        //   infiniteLoadBeginEdgeOffset={100}
+        //   onInfiniteLoad={this.onInfiniteLoad}
+        //   loadingSpinnerDelegate={this.spinner()}
+        //   isInfiniteLoading={loading}
+        // >
+        <div>
           {items.map(this.rowRenderer)}
-        </Infinite>
+        </div>
+        // </Infinite>
       );
     } else if (!this.props.loading) {
       // TODO: render this message outside of the InfiniteScroll block
