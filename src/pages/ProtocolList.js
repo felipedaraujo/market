@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
-import Infinite from 'react-infinite'
+import Infinite from 'react-infinite';
+import { Link } from 'react-router-dom';
+
 
 const H4 = styled.h4`
   &.card-title {
@@ -70,7 +72,7 @@ class ProtocolList extends Component {
 
   rowRenderer = (item, key) => {
     return (
-      <div className="card mb-3 border-0" key={key}
+      <Link to={`/${item.id}`} className="card mb-3 border-0 text-dark" key={key}
               onClick={() => this.props.onItemSelect(item)}>
         <div className="card-body">
           <H4 className="card-title">
@@ -78,7 +80,7 @@ class ProtocolList extends Component {
           </H4>
           {this.methods(item)}
         </div>
-      </div>
+      </Link>
     )
   }
 

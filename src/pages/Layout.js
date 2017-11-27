@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import { Route } from 'react-router-dom';
+import { Switch, Route } from 'react-router-dom';
 
 import Header from './../components/Header';
 import ProtocolList from './ProtocolList';
@@ -64,9 +64,6 @@ class Layout extends Component {
 
   onItemSelect = (item) => {
     this.setState({ item });
-    this.props.history.push({
-      pathname: `/${item.id}`
-    });
   }
 
   onLoadMore = () => {
@@ -81,8 +78,10 @@ class Layout extends Component {
 
         <div className="row justify-content-center p-4 bg-light">
           <div className="col col-lg-7">
-            <Route path={this.props.match.url}  render={() => <ProtocolList items={this.state.items} onItemSelect={this.onItemSelect} query={this.state.query} onLoadMore={this.onLoadMore} hasMoreItems={this.state.hasMoreItems} loading={this.state.loading} />} exact />
-            <Route path="/:protocolId" render={(props) => <ProtocolItem item={this.state.item} />} />
+            <Switch>
+              <Route path="/"  render={() => <ProtocolList items={this.state.items} onItemSelect={this.onItemSelect} query={this.state.query} onLoadMore={this.onLoadMore} hasMoreItems={this.state.hasMoreItems} loading={this.state.loading} />} exact />
+              <Route path="/:protocolId" render={(props) => <ProtocolItem item={this.state.item} />} />
+            </Switch>
           </div>
 
           <div className="col-lg-3">
